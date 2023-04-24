@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 
 @Table(name = "livros")
 @Entity(name = "Livro")
@@ -126,6 +127,15 @@ public class Livro {
 			return false;
 		Livro other = (Livro) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public void atualizarInformacoes(@Valid DadosAtualizacaoLivro dados) {
+		if (dados.localizacao() != null) {
+			this.localizacao = dados.localizacao();			
+		}
+		if (dados.status() != null) {
+			this.status = dados.status();			
+		}
 	}
 	
 	
