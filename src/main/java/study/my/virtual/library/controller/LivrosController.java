@@ -1,19 +1,25 @@
 package study.my.virtual.library.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import study.my.virtual.library.livro.DadosCadastroLivro;
+import study.my.virtual.library.livro.Livro;
+import study.my.virtual.library.livro.LivroRepository;
 
 @RestController
 @RequestMapping("livros")
 public class LivrosController {
 	
+	@Autowired
+	private LivroRepository repository;
+	
 	@PostMapping
 	public void cadastrar(@RequestBody DadosCadastroLivro dados) {
-		System.out.println(dados);
+		repository.save(new Livro(dados));
 	}
 
 }

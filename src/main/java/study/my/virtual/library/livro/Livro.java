@@ -22,6 +22,15 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 public class Livro {
 	
+	public Livro(DadosCadastroLivro dados) {
+		this.titulo = dados.titulo();
+		this.autor = dados.autor();
+		this.paginas = dados.paginas();
+		this.genero = dados.genero();
+		this.localizacao = dados.localizacao();
+		this.status = dados.status();
+	}
+
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String titulo;
