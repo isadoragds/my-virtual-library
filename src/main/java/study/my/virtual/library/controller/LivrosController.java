@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.validation.Valid;
-import study.my.virtual.library.livro.DadosAtualizacaoLivro;
-import study.my.virtual.library.livro.DadosCadastroLivro;
-import study.my.virtual.library.livro.DadosDetalhamentoLivro;
-import study.my.virtual.library.livro.DadosListagemLivro;
-import study.my.virtual.library.livro.Livro;
-import study.my.virtual.library.livro.LivroRepository;
+import study.my.virtual.library.domain.DadosAtualizacaoLivro;
+import study.my.virtual.library.domain.DadosCadastroLivro;
+import study.my.virtual.library.domain.DadosDetalhamentoLivro;
+import study.my.virtual.library.domain.DadosListagemLivro;
+import study.my.virtual.library.domain.Livro;
+import study.my.virtual.library.domain.LivroRepository;
 
 @RestController
 @RequestMapping("livros")

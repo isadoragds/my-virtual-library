@@ -1,4 +1,4 @@
-package study.my.virtual.library.livro;
+package study.my.virtual.library.domain;
 
 public record DadosListagemLivro(Long id, String titulo, String autor, Genero genero, Status status) {
 	

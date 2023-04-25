@@ -1,4 +1,4 @@
-package study.my.virtual.library.livro;
+package study.my.virtual.library.domain;
 
 public enum Genero {
 	
