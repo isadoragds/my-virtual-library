@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +14,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.validation.Valid;
 import study.my.virtual.library.livro.DadosAtualizacaoLivro;
 import study.my.virtual.library.livro.DadosCadastroLivro;
+import study.my.virtual.library.livro.DadosDetalhamentoLivro;
 import study.my.virtual.library.livro.DadosListagemLivro;
 import study.my.virtual.library.livro.Livro;
 import study.my.virtual.library.livro.LivroRepository;
@@ -30,26 +33,36 @@ public class LivrosController {
 	
 	@PostMapping
 	@Transactional
-	public void cadastrar(@RequestBody @Valid DadosCadastroLivro dados) {
-		repository.save(new Livro(dados));
+	public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroLivro dados, UriComponentsBuilder uriBuilder) {
+		var livros = new Livro(dados);
+		repository.save(livros);
+		
+		var uri = uriBuilder.path("/livros/{id}").buildAndExpand(livros.getId()).toUri();
+		
+		return ResponseEntity.created(uri).body(new DadosDetalhamentoLivro(livros));
 	}
 	
 	@GetMapping
-	public Page<DadosListagemLivro> listar(@PageableDefault(size = 10, sort = {"autor"}) Pageable paginacao) {
-		return repository.findAll(paginacao).map(DadosListagemLivro::new); //convertendo lista de livros para lista de dados listagem livro
+	public ResponseEntity<Page<DadosListagemLivro>> listar(@PageableDefault(size = 10, sort = {"autor"}) Pageable paginacao) {
+		var page = repository.findAll(paginacao).map(DadosListagemLivro::new); //convertendo lista de livros para lista de dados listagem livro
+		return ResponseEntity.ok(page);
 	}
 	
 	@PutMapping
 	@Transactional
-	public void atualizar(@RequestBody @Valid DadosAtualizacaoLivro dados) {
+	public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoLivro dados) {
 		var livros = repository.getReferenceById(dados.id());
 		livros.atualizarInformacoes(dados);
+		
+		return ResponseEntity.ok(new DadosDetalhamentoLivro(livros));
 	}
 	
 	@DeleteMapping("/{id}")
 	@Transactional
-	public void excluir(@PathVariable Long id) {
+	public ResponseEntity excluir(@PathVariable Long id) {
 		repository.deleteById(id);
+		
+		return ResponseEntity.noContent().build();
 	}
 
 }
