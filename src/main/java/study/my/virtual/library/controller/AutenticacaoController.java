@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import study.my.virtual.library.domain.usuario.DadosAutenticacao;
 import study.my.virtual.library.domain.usuario.Usuario;
+import study.my.virtual.library.infra.security.DadosTokenJWT;
 import study.my.virtual.library.infra.security.TokenService;
 
 @RestController
@@ -26,10 +27,12 @@ public class AutenticacaoController {
 	
 	@PostMapping
 	public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
-		var token = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
-		var authentication =  manager.authenticate(token);
+		var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+		var authentication =  manager.authenticate(authenticationToken);
 		
-		return ResponseEntity.ok(tokenService.gerarToken((Usuario) authentication.getPrincipal()));
+		var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+		
+		return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
 	}
 	
 }
