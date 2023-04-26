@@ -11,10 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import study.my.virtual.library.domain.usuario.DadosAutenticacao;
+import study.my.virtual.library.domain.usuario.Usuario;
+import study.my.virtual.library.infra.security.TokenService;
 
 @RestController
 @RequestMapping("/login")
 public class AutenticacaoController {
+	
+	@Autowired
+	private TokenService tokenService;
 	
 	@Autowired
 	private AuthenticationManager manager;
@@ -24,7 +29,7 @@ public class AutenticacaoController {
 		var token = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
 		var authentication =  manager.authenticate(token);
 		
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(tokenService.gerarToken((Usuario) authentication.getPrincipal()));
 	}
 	
 }
