@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.persistence.EntityNotFoundException;
 
+//o Spring chama essa classe automaticamente quando existir alguma exception
+
 @RestControllerAdvice
 public class TratadorDeErros {
 	
