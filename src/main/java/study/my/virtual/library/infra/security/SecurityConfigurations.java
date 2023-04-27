@@ -2,6 +2,7 @@ package study.my.virtual.library.infra.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,8 +19,11 @@ public class SecurityConfigurations {
 	@Bean //para devolver um obj para o spring, podendo injeta-lo em algum service
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 		return http.csrf().disable() //proprio tolken faz a protecao contra ataque csrf, por isso a desitivacao no spring security
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
-				.and().build();	//trocando a sessao de statfull para stateless -> API Rest, configuracao sera personalizada por url e o formulario sera feito no frontend
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //trocando a sessao de statfull para stateless -> API Rest, configuracao sera personalizada por url e o formulario sera feito no frontend
+				.and().authorizeHttpRequests()
+				.requestMatchers(HttpMethod.POST, "login").permitAll()
+				.anyRequest().authenticated()
+				.and().build();	
 	}
 	
 	@Bean //ensinando o Spring como criar o objeto para injeta-lo, no caso, na classe AutenticacaoController
