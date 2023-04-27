@@ -1,4 +1,6 @@
- package study.my.virtual.library.controller;
+package study.my.virtual.library.controller;
+
+import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.validation.Valid;
@@ -23,6 +27,7 @@ import study.my.virtual.library.domain.DadosDetalhamentoLivro;
 import study.my.virtual.library.domain.DadosListagemLivro;
 import study.my.virtual.library.domain.Livro;
 import study.my.virtual.library.domain.LivroRepository;
+import study.my.virtual.library.domain.LivroService;
 
 @RestController
 @RequestMapping("livros")
@@ -30,6 +35,9 @@ public class LivrosController {
 	
 	@Autowired
 	private LivroRepository repository;
+	
+	@Autowired
+	private LivroService livroService;
 	
 	@PostMapping
 	@Transactional
@@ -71,5 +79,14 @@ public class LivrosController {
 		
 		return ResponseEntity.ok(new DadosDetalhamentoLivro(livro));
 	}
+	
+	@PostMapping("/{picture}")
+	@Transactional
+	public ResponseEntity carregarFoto(@RequestParam(name = "file") MultipartFile file) {
+		URI uri = livroService.uploadLivroPicture(file);
+		
+		return ResponseEntity.created(uri).build();
+	}
+	
 
 }
