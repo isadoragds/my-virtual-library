@@ -37,6 +37,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		//System.out.println("chamando filter");
 		
 		//recuperando o token
 		var tokenJWT = recuperarToken(request);
@@ -47,6 +48,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 			
 			var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
+			//System.out.println("logado");
 		}
 		
 		//filterChain representa a cadeia de filtros da requisicao
@@ -58,7 +60,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 	private String recuperarToken(HttpServletRequest request) {
 		var authorizationHeader = request.getHeader("Authorization");
 		if (authorizationHeader != null) {
-			return authorizationHeader.replaceAll("Bearer", "");
+			return authorizationHeader.replaceAll("Bearer ", "");
 		}
 		
 		return null;
