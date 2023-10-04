@@ -8,14 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import study.my.virtual.library.s3.S3Service;
 
+
 @Service
 public class LivroService {
-	
-	@Autowired
-	private S3Service s3Service;
-	
-	public URI uploadLivroPicture(MultipartFile multipartFile) {
-		return s3Service.uploadFile(multipartFile);
-	}
-	
+
 }
+	

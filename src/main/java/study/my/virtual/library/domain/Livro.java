@@ -137,8 +137,7 @@ public class Livro {
 			this.status = dados.status();			
 		}
 	}
-	
-	
+
+}	
 
 
-}

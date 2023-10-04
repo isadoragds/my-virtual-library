@@ -80,13 +80,5 @@ public class LivrosController {
 		return ResponseEntity.ok(new DadosDetalhamentoLivro(livro));
 	}
 	
-	@PostMapping("/{picture}")
-	@Transactional
-	public ResponseEntity carregarFoto(@RequestParam(name = "file") MultipartFile file) {
-		URI uri = livroService.uploadLivroPicture(file);
-		
-		return ResponseEntity.created(uri).build();
-	}
-	
 
 }
